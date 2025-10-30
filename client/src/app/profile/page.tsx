@@ -1,8 +1,11 @@
+'use client';
+
 import { useState } from 'react';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { User, Package, Heart, MapPin, CreditCard, Settings, LogOut, ShoppingBag } from 'lucide-react';
 
-const ProfilePage = () => {
+export default function ProfilePage() {
   const [activeTab, setActiveTab] = useState('orders');
 
   const tabs = [
@@ -121,11 +124,14 @@ const ProfilePage = () => {
                       <div className="space-y-3 mb-4">
                         {order.items.map((item, index) => (
                           <div key={index} className="flex gap-4">
-                            <img
-                              src={item.image}
-                              alt={item.name}
-                              className="w-20 h-20 object-cover rounded-lg"
-                            />
+                            <div className="relative w-20 h-20 rounded-lg overflow-hidden">
+                              <Image
+                                src={item.image}
+                                alt={item.name}
+                                fill
+                                className="object-cover"
+                              />
+                            </div>
                             <div className="flex-1">
                               <h4 className="font-medium mb-1">{item.name}</h4>
                               <p className="text-sm text-gray-600">
@@ -158,11 +164,12 @@ const ProfilePage = () => {
                   <div className="grid md:grid-cols-3 gap-6">
                     {favorites.map((item) => (
                       <div key={item.id} className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition group">
-                        <div className="aspect-square overflow-hidden">
-                          <img
+                        <div className="relative aspect-square overflow-hidden">
+                          <Image
                             src={item.image}
                             alt={item.name}
-                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                            fill
+                            className="object-cover group-hover:scale-110 transition-transform duration-500"
                           />
                         </div>
                         <div className="p-4">
@@ -298,7 +305,5 @@ const ProfilePage = () => {
       </div>
     </div>
   );
-};
-
-export default ProfilePage;
+}
 

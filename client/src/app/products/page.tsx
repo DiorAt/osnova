@@ -1,10 +1,13 @@
+'use client';
+
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { SlidersHorizontal, X } from 'lucide-react';
-import { products, categories } from '../data/mockData';
+import { products, categories } from '@/data/mockData';
 
-const ProductsPage = () => {
+export default function ProductsPage() {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedGender, setSelectedGender] = useState('all');
   const [priceRange, setPriceRange] = useState([0, 50000]);
@@ -50,101 +53,120 @@ const ProductsPage = () => {
       <div className="container mx-auto px-4 py-12">
         <div className="flex gap-8">
           {/* Фильтры - десктоп */}
-          <aside className="hidden lg:block w-64 flex-shrink-0">
-            <div className="bg-white rounded-2xl p-6 sticky top-24 shadow-md">
-              <h2 className="text-xl font-semibold mb-6">Фильтры</h2>
+          <aside className="hidden lg:block w-72 flex-shrink-0">
+            <div className="bg-gradient-to-br from-white to-gray-50 rounded-3xl p-6 sticky top-24 shadow-xl border border-gray-100">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-2xl font-bold bg-gradient-to-r from-primary-600 to-pink-600 bg-clip-text text-transparent">
+                  Фильтры
+                </h2>
+                <button
+                  onClick={() => {
+                    setSelectedCategory('all');
+                    setSelectedGender('all');
+                    setPriceRange([0, 50000]);
+                  }}
+                  className="text-sm text-primary-600 hover:text-primary-700 font-medium"
+                >
+                  Сбросить
+                </button>
+              </div>
 
               {/* Категории */}
-              <div className="mb-6">
-                <h3 className="font-semibold mb-3">Категория</h3>
+              <div className="mb-8">
+                <h3 className="font-bold text-gray-800 mb-4 flex items-center gap-2">
+                  <div className="w-1 h-5 bg-gradient-to-b from-primary-600 to-pink-600 rounded-full"></div>
+                  Категория
+                </h3>
                 <div className="space-y-2">
-                  <label className="flex items-center cursor-pointer">
-                    <input
-                      type="radio"
-                      name="category"
-                      value="all"
-                      checked={selectedCategory === 'all'}
-                      onChange={(e) => setSelectedCategory(e.target.value)}
-                      className="mr-2"
-                    />
-                    <span>Все категории</span>
-                  </label>
-                  {categories.map((cat) => (
-                    <label key={cat.id} className="flex items-center cursor-pointer">
-                      <input
-                        type="radio"
-                        name="category"
-                        value={cat.name}
-                        checked={selectedCategory === cat.name}
-                        onChange={(e) => setSelectedCategory(e.target.value)}
-                        className="mr-2"
-                      />
-                      <span>{cat.name}</span>
-                      <span className="ml-auto text-sm text-gray-500">({cat.count})</span>
-                    </label>
-                  ))}
+                  {['all', ...categories.map(c => c.name)].map((cat) => {
+                    const category = categories.find(c => c.name === cat);
+                    const isAll = cat === 'all';
+                    const isSelected = selectedCategory === cat;
+                    
+                    return (
+                      <button
+                        key={cat}
+                        onClick={() => setSelectedCategory(cat)}
+                        className={`w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-300 ${
+                          isSelected
+                            ? 'bg-gradient-to-r from-primary-600 to-pink-600 text-white shadow-lg scale-105'
+                            : 'bg-white hover:bg-gray-50 text-gray-700 hover:shadow-md'
+                        }`}
+                      >
+                        <span className="font-medium">{isAll ? 'Все категории' : cat}</span>
+                        {!isAll && category && (
+                          <span className={`text-sm px-2 py-1 rounded-full ${
+                            isSelected ? 'bg-white/20' : 'bg-gray-100'
+                          }`}>
+                            {category.count}
+                          </span>
+                        )}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
 
               {/* Пол */}
-              <div className="mb-6">
-                <h3 className="font-semibold mb-3">Для кого</h3>
-                <div className="space-y-2">
-                  <label className="flex items-center cursor-pointer">
-                    <input
-                      type="radio"
-                      name="gender"
-                      value="all"
-                      checked={selectedGender === 'all'}
-                      onChange={(e) => setSelectedGender(e.target.value)}
-                      className="mr-2"
-                    />
-                    <span>Для всех</span>
-                  </label>
-                  <label className="flex items-center cursor-pointer">
-                    <input
-                      type="radio"
-                      name="gender"
-                      value="women"
-                      checked={selectedGender === 'women'}
-                      onChange={(e) => setSelectedGender(e.target.value)}
-                      className="mr-2"
-                    />
-                    <span>Женщинам</span>
-                  </label>
-                  <label className="flex items-center cursor-pointer">
-                    <input
-                      type="radio"
-                      name="gender"
-                      value="men"
-                      checked={selectedGender === 'men'}
-                      onChange={(e) => setSelectedGender(e.target.value)}
-                      className="mr-2"
-                    />
-                    <span>Мужчинам</span>
-                  </label>
+              <div className="mb-8">
+                <h3 className="font-bold text-gray-800 mb-4 flex items-center gap-2">
+                  <div className="w-1 h-5 bg-gradient-to-b from-primary-600 to-pink-600 rounded-full"></div>
+                  Для кого
+                </h3>
+                <div className="grid grid-cols-3 gap-2">
+                  {[
+                    { value: 'all', label: 'Все', emoji: '👥' },
+                    { value: 'women', label: 'Женщины', emoji: '👗' },
+                    { value: 'men', label: 'Мужчины', emoji: '👔' },
+                  ].map((gender) => (
+                    <button
+                      key={gender.value}
+                      onClick={() => setSelectedGender(gender.value)}
+                      className={`flex flex-col items-center justify-center p-3 rounded-xl transition-all duration-300 ${
+                        selectedGender === gender.value
+                          ? 'bg-gradient-to-br from-primary-600 to-pink-600 text-white shadow-lg scale-105'
+                          : 'bg-white hover:bg-gray-50 text-gray-700 hover:shadow-md'
+                      }`}
+                    >
+                      <span className="text-2xl mb-1">{gender.emoji}</span>
+                      <span className="text-xs font-medium">{gender.label}</span>
+                    </button>
+                  ))}
                 </div>
               </div>
 
               {/* Цена */}
               <div className="mb-6">
-                <h3 className="font-semibold mb-3">Цена</h3>
-                <div className="space-y-2">
-                  <div className="flex gap-2">
-                    <input
-                      type="number"
-                      value={priceRange[0]}
-                      onChange={(e) => setPriceRange([+e.target.value, priceRange[1]])}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg"
-                      placeholder="От"
-                    />
-                    <input
-                      type="number"
-                      value={priceRange[1]}
-                      onChange={(e) => setPriceRange([priceRange[0], +e.target.value])}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg"
-                      placeholder="До"
-                    />
+                <h3 className="font-bold text-gray-800 mb-4 flex items-center gap-2">
+                  <div className="w-1 h-5 bg-gradient-to-b from-primary-600 to-pink-600 rounded-full"></div>
+                  Цена
+                </h3>
+                <div className="space-y-4">
+                  <div className="flex gap-3">
+                    <div className="flex-1">
+                      <label className="text-xs text-gray-600 mb-1 block">От</label>
+                      <input
+                        type="number"
+                        value={priceRange[0]}
+                        onChange={(e) => setPriceRange([+e.target.value, priceRange[1]])}
+                        className="w-full px-3 py-2 border-2 border-gray-200 rounded-xl focus:border-primary-500 focus:outline-none transition"
+                        placeholder="0"
+                      />
+                    </div>
+                    <div className="flex-1">
+                      <label className="text-xs text-gray-600 mb-1 block">До</label>
+                      <input
+                        type="number"
+                        value={priceRange[1]}
+                        onChange={(e) => setPriceRange([priceRange[0], +e.target.value])}
+                        className="w-full px-3 py-2 border-2 border-gray-200 rounded-xl focus:border-primary-500 focus:outline-none transition"
+                        placeholder="50000"
+                      />
+                    </div>
+                  </div>
+                  <div className="flex justify-between text-sm text-gray-600">
+                    <span>{priceRange[0].toLocaleString('ru-RU')} ₽</span>
+                    <span>{priceRange[1].toLocaleString('ru-RU')} ₽</span>
                   </div>
                 </div>
               </div>
@@ -190,13 +212,14 @@ const ProductsPage = () => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.05 }}
                 >
-                  <Link to={`/product/${product.id}`}>
+                  <Link href={`/product/${product.id}`}>
                     <div className="group bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
                       <div className="relative aspect-[3/4] overflow-hidden bg-gray-100">
-                        <img
+                        <Image
                           src={product.images[0]}
                           alt={product.name}
-                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                          fill
+                          className="object-cover group-hover:scale-110 transition-transform duration-500"
                         />
                         {product.discount > 0 && (
                           <div className="absolute top-4 right-4 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
@@ -238,28 +261,7 @@ const ProductsPage = () => {
           </div>
         </div>
       </div>
-
-      {/* Мобильные фильтры */}
-      {showFilters && (
-        <div className="fixed inset-0 bg-black/50 z-50 lg:hidden">
-          <motion.div
-            initial={{ x: '100%' }}
-            animate={{ x: 0 }}
-            className="absolute right-0 top-0 bottom-0 w-80 bg-white p-6 overflow-y-auto"
-          >
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-xl font-semibold">Фильтры</h2>
-              <button onClick={() => setShowFilters(false)}>
-                <X className="w-6 h-6" />
-              </button>
-            </div>
-            {/* Повторить содержимое десктопных фильтров */}
-          </motion.div>
-        </div>
-      )}
     </div>
   );
-};
-
-export default ProductsPage;
+}
 

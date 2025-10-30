@@ -1,9 +1,12 @@
-import { Link } from 'react-router-dom';
+'use client';
+
+import Link from 'next/link';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { ArrowRight, Clock, Tag } from 'lucide-react';
-import { promotions } from '../data/mockData';
+import { promotions } from '@/data/mockData';
 
-const PromotionsPage = () => {
+export default function PromotionsPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero */}
@@ -29,10 +32,11 @@ const PromotionsPage = () => {
           className="mb-16"
         >
           <div className="relative h-[500px] rounded-3xl overflow-hidden shadow-2xl">
-            <img
+            <Image
               src={promotions[0].image}
               alt={promotions[0].title}
-              className="w-full h-full object-cover"
+              fill
+              className="object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent">
               <div className="h-full flex items-center">
@@ -52,7 +56,7 @@ const PromotionsPage = () => {
                       <span>Действует до {new Date(promotions[0].endDate).toLocaleDateString('ru-RU')}</span>
                     </div>
                     <Link
-                      to="/products"
+                      href="/products"
                       className="inline-flex items-center gap-3 px-8 py-4 bg-white text-gray-900 rounded-xl font-bold text-lg hover:shadow-2xl hover:-translate-y-1 transition-all"
                     >
                       К покупкам
@@ -77,12 +81,13 @@ const PromotionsPage = () => {
                 transition={{ delay: index * 0.1 }}
                 viewport={{ once: true }}
               >
-                <Link to="/products">
+                <Link href="/products">
                   <div className="group relative h-[400px] rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300">
-                    <img
+                    <Image
                       src={promo.image}
                       alt={promo.title}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      fill
+                      className="object-cover group-hover:scale-110 transition-transform duration-500"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent">
                       <div className="absolute bottom-0 p-8 text-white w-full">
@@ -134,7 +139,5 @@ const PromotionsPage = () => {
       </div>
     </div>
   );
-};
-
-export default PromotionsPage;
+}
 

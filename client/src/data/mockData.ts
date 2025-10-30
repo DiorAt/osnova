@@ -1,6 +1,43 @@
 // Моковые данные для интернет-магазина одежды
 
-export const products = [
+export interface Product {
+  id: number;
+  name: string;
+  price: number;
+  oldPrice: number | null;
+  category: string;
+  gender: 'women' | 'men' | 'unisex';
+  sizes: string[];
+  colors: string[];
+  images: string[];
+  description: string;
+  material: string;
+  care: string;
+  rating: number;
+  reviews: number;
+  inStock: boolean;
+  discount: number;
+}
+
+export interface Promotion {
+  id: number;
+  title: string;
+  description: string;
+  discount: number;
+  image: string;
+  startDate: string;
+  endDate: string;
+  type: string;
+}
+
+export interface Category {
+  id: number;
+  name: string;
+  slug: string;
+  count: number;
+}
+
+export const products: Product[] = [
   {
     id: 1,
     name: 'Кашемировое пальто Premium',
@@ -172,7 +209,7 @@ export const products = [
   },
 ];
 
-export const promotions = [
+export const promotions: Promotion[] = [
   {
     id: 1,
     title: 'Зимняя распродажа',
@@ -215,7 +252,7 @@ export const promotions = [
   },
 ];
 
-export const categories = [
+export const categories: Category[] = [
   { id: 1, name: 'Верхняя одежда', slug: 'outerwear', count: 124 },
   { id: 2, name: 'Блузки', slug: 'blouses', count: 89 },
   { id: 3, name: 'Джинсы', slug: 'jeans', count: 156 },

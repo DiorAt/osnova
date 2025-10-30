@@ -1,12 +1,14 @@
-import { useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { Heart, ShoppingBag, Truck, Shield, RefreshCw, Star, Check, ChevronLeft, ChevronRight } from 'lucide-react';
-import { products } from '../data/mockData';
+'use client';
 
-const ProductPage = () => {
-  const { id } = useParams();
-  const product = products.find((p) => p.id === parseInt(id)) || products[0];
+import { useState } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import { motion } from 'framer-motion';
+import { Heart, ShoppingBag, Truck, Shield, RefreshCw, Star, Check, ChevronRight } from 'lucide-react';
+import { products } from '@/data/mockData';
+
+export default function ProductPage({ params }: { params: { id: string } }) {
+  const product = products.find((p) => p.id === parseInt(params.id)) || products[0];
 
   const [selectedImage, setSelectedImage] = useState(0);
   const [selectedSize, setSelectedSize] = useState('');
@@ -22,9 +24,9 @@ const ProductPage = () => {
       <div className="bg-gray-50 py-4">
         <div className="container mx-auto px-4">
           <div className="flex items-center gap-2 text-sm text-gray-600">
-            <Link to="/" className="hover:text-primary-600">Главная</Link>
+            <Link href="/" className="hover:text-primary-600">Главная</Link>
             <ChevronRight className="w-4 h-4" />
-            <Link to="/products" className="hover:text-primary-600">Каталог</Link>
+            <Link href="/products" className="hover:text-primary-600">Каталог</Link>
             <ChevronRight className="w-4 h-4" />
             <span className="text-gray-900 font-medium">{product.name}</span>
           </div>
@@ -42,10 +44,11 @@ const ProductPage = () => {
               animate={{ opacity: 1 }}
               className="relative aspect-[3/4] rounded-3xl overflow-hidden bg-gray-100 shadow-2xl"
             >
-              <img
+              <Image
                 src={product.images[selectedImage]}
                 alt={product.name}
-                className="w-full h-full object-cover"
+                fill
+                className="object-cover"
               />
               {product.discount > 0 && (
                 <div className="absolute top-6 right-6 bg-gradient-to-r from-red-500 to-pink-500 text-white px-6 py-3 rounded-full text-lg font-bold shadow-lg">
@@ -63,13 +66,13 @@ const ProductPage = () => {
                 <button
                   key={index}
                   onClick={() => setSelectedImage(index)}
-                  className={`aspect-square rounded-xl overflow-hidden transition-all ${
+                  className={`relative aspect-square rounded-xl overflow-hidden transition-all ${
                     selectedImage === index
                       ? 'ring-4 ring-primary-500 shadow-lg scale-105'
                       : 'ring-2 ring-gray-200 hover:ring-gray-300'
                   }`}
                 >
-                  <img src={image} alt={`${product.name} ${index + 1}`} className="w-full h-full object-cover" />
+                  <Image src={image} alt={`${product.name} ${index + 1}`} fill className="object-cover" />
                 </button>
               ))}
             </div>
@@ -284,13 +287,14 @@ const ProductPage = () => {
             <h2 className="text-3xl font-display font-bold mb-8">Вам может понравиться</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {relatedProducts.map((relatedProduct) => (
-                <Link key={relatedProduct.id} to={`/product/${relatedProduct.id}`}>
+                <Link key={relatedProduct.id} href={`/product/${relatedProduct.id}`}>
                   <div className="group bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
                     <div className="relative aspect-[3/4] overflow-hidden bg-gray-100">
-                      <img
+                      <Image
                         src={relatedProduct.images[0]}
                         alt={relatedProduct.name}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                        fill
+                        className="object-cover group-hover:scale-110 transition-transform duration-500"
                       />
                     </div>
                     <div className="p-4">
@@ -310,7 +314,5 @@ const ProductPage = () => {
       </div>
     </div>
   );
-};
-
-export default ProductPage;
+}
 

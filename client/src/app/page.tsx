@@ -1,9 +1,12 @@
-import { Link } from 'react-router-dom';
+'use client';
+
+import Link from 'next/link';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { ArrowRight, Sparkles, TrendingUp, Shield } from 'lucide-react';
-import { products, promotions } from '../data/mockData';
+import { products, promotions } from '@/data/mockData';
 
-const HomePage = () => {
+export default function HomePage() {
   const featuredProducts = products.slice(0, 4);
   const mainPromotion = promotions[0];
 
@@ -27,14 +30,14 @@ const HomePage = () => {
               </p>
               <div className="flex flex-wrap gap-4">
                 <Link
-                  to="/products"
+                  href="/products"
                   className="px-8 py-4 bg-gradient-to-r from-primary-600 to-pink-600 text-white rounded-xl font-semibold hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex items-center gap-2"
                 >
                   Смотреть каталог
                   <ArrowRight className="w-5 h-5" />
                 </Link>
                 <Link
-                  to="/promotions"
+                  href="/promotions"
                   className="px-8 py-4 bg-white text-gray-900 rounded-xl font-semibold hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border-2 border-gray-200"
                 >
                   Акции
@@ -46,14 +49,15 @@ const HomePage = () => {
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="hidden md:block"
+              className="hidden md:block relative"
             >
-              <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-br from-primary-400 to-pink-400 rounded-3xl transform rotate-6 opacity-20"></div>
-                <img
+              <div className="absolute inset-0 bg-gradient-to-br from-primary-400 to-pink-400 rounded-3xl transform rotate-6 opacity-20"></div>
+              <div className="relative rounded-3xl shadow-2xl overflow-hidden w-full h-[500px]">
+                <Image
                   src="https://images.unsplash.com/photo-1483985988355-763728e1935b?w=600&h=800&fit=crop"
                   alt="Fashion"
-                  className="relative rounded-3xl shadow-2xl object-cover w-full h-[500px]"
+                  fill
+                  className="object-cover"
                 />
               </div>
             </motion.div>
@@ -108,15 +112,16 @@ const HomePage = () => {
       {/* Баннер акции */}
       <section className="py-16">
         <div className="container mx-auto px-4">
-          <Link to="/promotions">
+          <Link href="/promotions">
             <motion.div
               whileHover={{ scale: 1.02 }}
               className="relative h-[400px] rounded-3xl overflow-hidden shadow-2xl"
             >
-              <img
+              <Image
                 src={mainPromotion.image}
                 alt={mainPromotion.title}
-                className="w-full h-full object-cover"
+                fill
+                className="object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-transparent flex items-center">
                 <div className="max-w-xl p-12 text-white">
@@ -158,13 +163,14 @@ const HomePage = () => {
                 transition={{ delay: index * 0.1 }}
                 viewport={{ once: true }}
               >
-                <Link to={`/product/${product.id}`}>
+                <Link href={`/product/${product.id}`}>
                   <div className="group bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
                     <div className="relative aspect-[3/4] overflow-hidden bg-gray-100">
-                      <img
+                      <Image
                         src={product.images[0]}
                         alt={product.name}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                        fill
+                        className="object-cover group-hover:scale-110 transition-transform duration-500"
                       />
                       {product.discount > 0 && (
                         <div className="absolute top-4 right-4 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
@@ -193,7 +199,7 @@ const HomePage = () => {
 
           <div className="text-center mt-12">
             <Link
-              to="/products"
+              href="/products"
               className="inline-flex items-center gap-2 px-8 py-4 bg-gray-900 text-white rounded-xl font-semibold hover:bg-gray-800 transition-all hover:shadow-xl"
             >
               Смотреть все товары
@@ -204,7 +210,5 @@ const HomePage = () => {
       </section>
     </div>
   );
-};
-
-export default HomePage;
+}
 
