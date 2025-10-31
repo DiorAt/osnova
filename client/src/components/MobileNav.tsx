@@ -20,7 +20,7 @@ export default function MobileNav({ onSearchClick, onAIClick, onCartClick, cartC
     { icon: Search, label: 'Поиск', path: null, onClick: onSearchClick },
     { icon: Sparkles, label: 'AI', path: null, onClick: onAIClick },
     { icon: ShoppingBag, label: 'Корзина', path: null, onClick: onCartClick, badge: cartCount },
-    { icon: User, label: 'Профиль', path: '/profile', onClick: null },
+    { icon: User, label: 'Профиль', path: '/auth', onClick: null },
   ];
 
   return (

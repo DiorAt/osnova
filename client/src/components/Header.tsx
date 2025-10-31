@@ -96,9 +96,9 @@ const Header = () => {
                 >
                   <Sparkles className="w-5 h-5 group-hover:animate-pulse" />
                 </button>
-                <Link href="/profile" className="p-2 hover:bg-gray-100 rounded-lg transition">
-                  <User className="w-5 h-5 text-gray-700" />
-                </Link>
+              <Link href="/auth" className="p-2 hover:bg-gray-100 rounded-lg transition">
+                <User className="w-5 h-5 text-gray-700" />
+              </Link>
                 <button
                   onClick={() => setIsWishlistOpen(true)}
                   className="p-2 hover:bg-gray-100 rounded-lg transition"
