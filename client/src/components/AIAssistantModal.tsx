@@ -71,39 +71,43 @@ export default function AIAssistantModal({ isOpen, onClose }: AIAssistantModalPr
             className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50"
           />
           
-          {/* Modal */}
+          {/* Modal - Desktop: центрировано, Mobile: почти полный экран */}
           <motion.div
             initial={{ scale: 0.9, opacity: 0, y: 20 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.9, opacity: 0, y: 20 }}
             transition={{ type: 'spring', damping: 25 }}
-            className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl max-h-[80vh] bg-white z-50 shadow-2xl mx-4 rounded-3xl overflow-hidden flex flex-col"
+            className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50 flex flex-col overflow-hidden bg-white shadow-2xl
+              w-[calc(100%-0.5rem)] h-[calc(100vh-0.5rem)] max-h-[calc(100vh-0.5rem)] rounded-xl
+              md:w-full md:h-auto md:max-w-2xl md:max-h-[85vh] md:rounded-3xl"
+            onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
-            <div className="relative bg-gradient-to-r from-primary-600 via-purple-600 to-pink-600 p-6 text-white">
+            <div className="relative bg-gradient-to-r from-primary-600 via-purple-600 to-pink-600 p-4 md:p-6 text-white flex-shrink-0">
               <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS1vcGFjaXR5PSIwLjEiIHN0cm9rZS13aWR0aD0iMSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNncmlkKSIvPjwvc3ZnPg==')] opacity-30"></div>
               
               <div className="relative flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center">
-                    <Sparkles className="w-6 h-6" />
+                <div className="flex items-center gap-2 md:gap-3">
+                  <div className="w-10 h-10 md:w-12 md:h-12 bg-white/20 backdrop-blur-sm rounded-xl md:rounded-2xl flex items-center justify-center flex-shrink-0">
+                    <Sparkles className="w-5 h-5 md:w-6 md:h-6" />
                   </div>
                   <div>
-                    <h2 className="text-2xl font-bold">AI-Стилист</h2>
-                    <p className="text-sm opacity-90">Ваш персональный помощник</p>
+                    <h2 className="text-xl md:text-2xl font-bold">AI-Стилист</h2>
+                    <p className="text-xs md:text-sm opacity-90 hidden md:block">Ваш персональный помощник</p>
                   </div>
                 </div>
                 <button
                   onClick={onClose}
-                  className="p-2 hover:bg-white/20 rounded-lg transition"
+                  className="p-2 hover:bg-white/20 rounded-lg transition flex-shrink-0"
+                  aria-label="Закрыть"
                 >
-                  <X className="w-6 h-6" />
+                  <X className="w-5 h-5 md:w-6 md:h-6" />
                 </button>
               </div>
             </div>
 
             {/* Messages */}
-            <div className="flex-1 overflow-y-auto p-6 space-y-4 bg-gradient-to-b from-gray-50 to-white">
+            <div className="flex-1 overflow-y-auto p-4 md:p-6 space-y-3 md:space-y-4 bg-gradient-to-b from-gray-50 to-white min-h-0">
               {messages.map((message, index) => (
                 <motion.div
                   key={index}
@@ -156,8 +160,8 @@ export default function AIAssistantModal({ isOpen, onClose }: AIAssistantModalPr
 
             {/* Quick actions */}
             {messages.length === 1 && (
-              <div className="px-6 pb-4">
-                <p className="text-sm text-gray-600 mb-3">Быстрые вопросы:</p>
+              <div className="px-4 md:px-6 pb-4 flex-shrink-0">
+                <p className="text-xs md:text-sm text-gray-600 mb-2 md:mb-3">Быстрые вопросы:</p>
                 <div className="grid grid-cols-2 gap-2">
                   {quickActions.map((action, index) => (
                     <button
@@ -166,7 +170,7 @@ export default function AIAssistantModal({ isOpen, onClose }: AIAssistantModalPr
                         setInput(action);
                         setTimeout(handleSend, 100);
                       }}
-                      className="p-3 text-sm bg-white border-2 border-gray-200 rounded-xl hover:border-primary-500 hover:bg-primary-50 transition text-left"
+                      className="p-2 md:p-3 text-xs md:text-sm bg-white border-2 border-gray-200 rounded-lg md:rounded-xl hover:border-primary-500 hover:bg-primary-50 transition text-left"
                     >
                       {action}
                     </button>
@@ -176,22 +180,22 @@ export default function AIAssistantModal({ isOpen, onClose }: AIAssistantModalPr
             )}
 
             {/* Input */}
-            <div className="p-6 border-t bg-white">
-              <div className="flex gap-3">
+            <div className="p-4 md:p-6 border-t bg-white flex-shrink-0">
+              <div className="flex gap-2 md:gap-3">
                 <input
                   type="text"
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   onKeyPress={(e) => e.key === 'Enter' && handleSend()}
-                  placeholder="Опишите образ, который вы ищете..."
-                  className="flex-1 px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-primary-500 focus:outline-none"
+                  placeholder="Опишите образ..."
+                  className="flex-1 px-3 md:px-4 py-2 md:py-3 text-sm md:text-base border-2 border-gray-200 rounded-lg md:rounded-xl focus:border-primary-500 focus:outline-none"
                 />
                 <button
                   onClick={handleSend}
                   disabled={!input.trim()}
-                  className="px-6 py-3 bg-gradient-to-r from-primary-600 to-pink-600 text-white rounded-xl font-semibold hover:shadow-lg transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                  className="px-4 md:px-6 py-2 md:py-3 bg-gradient-to-r from-primary-600 to-pink-600 text-white rounded-lg md:rounded-xl font-semibold hover:shadow-lg transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 flex-shrink-0"
                 >
-                  <Send className="w-5 h-5" />
+                  <Send className="w-4 h-4 md:w-5 md:h-5" />
                 </button>
               </div>
             </div>
